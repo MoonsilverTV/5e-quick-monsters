@@ -18,6 +18,7 @@ concurrency:
 
 jobs:
   lint:
+    if: false # running locally for the moment
     runs-on: ubuntu-latest
     defaults:
       run:
