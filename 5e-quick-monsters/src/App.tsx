@@ -25,25 +25,35 @@ function MonsterSettings() {
    * saves
    *
    */
+
+  const [crIndex, setCrIndex] = useState(0)
+  //const selectedCr = crValues[crIndex]
+  const [offense, setOffense] = useState(1)
+  const [defense, setDefense] = useState(1)
+  const [offenseMod, setOffenseMod] = useState(0)
+  const [acMod, setAcMod] = useState(0)
+
   return (
     <>
-      <CRSlider />
-      <OffenseDefenseMixSelector />
-      <AccuracyAdjustmentsSelector />
+      <CRSlider crIndex={crIndex} setCrIndex={setCrIndex} />
+      <IntSlider min={1} max={13} value={offense} setValue={setOffense} labelText="Relative offensive power:" />
+      <IntSlider min={1} max={5} value={defense} setValue={setDefense} labelText="Relative defensive power:" />
+      <IntSlider min={-10} max={10} value={offenseMod} setValue={setOffenseMod} labelText="Adjust to-hit / DC by:" />
+      <IntSlider min={-10} max={10} value={acMod} setValue={setAcMod} labelText="Adjust AC by:" />
     </>
   )
 }
 
-const crValues = [{ val: 0, label: "0" },
+type CR = { val: number, label: string }
+const crValues: Array<CR> = [{ val: 0, label: "0" },
 { val: 1 / 8, label: "1/8" },
 { val: 1 / 4, label: "1/4" },
 { val: 1 / 2, label: "1/2" },
 ...Array.from(Array(30).keys()).map((i) => ({ val: i + 1, label: `${i + 1}` }))]
 
-function CRSlider() {
+function CRSlider(props: { crIndex: number, setCrIndex: (newValue: number) => void }) {
   const id = useId()
-  const [index, setIndex] = useState(0)
-  const selectedCr = crValues[index]
+  const selectedCr = crValues[props.crIndex]
 
   return (
     <>
@@ -54,31 +64,9 @@ function CRSlider() {
         min="0"
         max={crValues.length - 1}
         step="1"
-        value={index}
-        onChange={(e) => setIndex(Number(e.target.value))}
+        value={props.crIndex}
+        onChange={(e) => props.setCrIndex(Number(e.target.value))}
       />
-    </>
-  )
-}
-
-function OffenseDefenseMixSelector() {
-  const [offense, setOffense] = useState(1)
-  const [defense, setDefense] = useState(1)
-  return (
-    <>
-      <IntSlider min={1} max={13} value={offense} setValue={setOffense} labelText="Relative offensive power:" />
-      <IntSlider min={1} max={5} value={defense} setValue={setDefense} labelText="Relative defensive power:" />
-    </>
-  )
-}
-
-function AccuracyAdjustmentsSelector() {
-  const [offenseMod, setOffenseMod] = useState(0)
-  const [acMod, setAcMod] = useState(0)
-  return (
-    <>
-      <IntSlider min={-10} max={10} value={offenseMod} setValue={setOffenseMod} labelText="Adjust to-hit / DC by:" />
-      <IntSlider min={-10} max={10} value={acMod} setValue={setAcMod} labelText="Adjust AC by:" />
     </>
   )
 }
