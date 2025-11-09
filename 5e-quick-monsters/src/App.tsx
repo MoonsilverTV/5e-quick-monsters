@@ -1,4 +1,5 @@
 import { useId, useState } from "react"
+import { IntSlider } from "./components/IntSlider"
 
 function App() {
   return (
@@ -80,23 +81,6 @@ function AccuracyAdjustmentsSelector() {
       <IntSlider min={-10} max={10} value={acMod} setValue={setAcMod} labelText="Adjust AC by:" />
     </>
   )
-}
-
-function IntSlider(props: { min: number, max: number, value: number, setValue: (newValue: number) => void, labelText: string }) {
-  const id = useId()
-  return (
-    <>
-      <label htmlFor={id}>{props.labelText} {props.value}</label>
-      <input
-        id={id}
-        type="range"
-        min={props.min}
-        max={props.max}
-        step="1"
-        value={props.value}
-        onChange={(e) => props.setValue(Number(e.target.value))}
-      />
-    </>)
 }
 
 export default App
